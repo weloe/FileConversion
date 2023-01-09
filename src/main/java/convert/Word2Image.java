@@ -9,6 +9,7 @@ import util.ImageUtil;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class Word2Image implements FileConversion{
     public String convert(String pathName, String dirAndFileName) throws Exception {
         String outPath = dirAndFileName + suffix;
         if(Files.exists(Paths.get(outPath))){
-            throw new RuntimeException(outPath+" 文件已存在");
+            throw new FileAlreadyExistsException(outPath+" 文件已存在");
         }
 
         Document doc = new Document();

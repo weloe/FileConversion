@@ -3,6 +3,7 @@ package convert;
 import com.spire.doc.Document;
 import com.spire.doc.FileFormat;
 
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -15,10 +16,10 @@ public class Word2HTML implements FileConversion{
     }
 
     @Override
-    public String convert(String pathName, String dirAndFileName) {
+    public String convert(String pathName, String dirAndFileName) throws FileAlreadyExistsException {
         String outPath = dirAndFileName + suffix;
         if(Files.exists(Paths.get(outPath))){
-            throw new RuntimeException(outPath+" 文件已存在");
+            throw new FileAlreadyExistsException(outPath+" 文件已存在");
         }
 
         Document doc = new Document();

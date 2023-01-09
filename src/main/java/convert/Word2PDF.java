@@ -7,6 +7,7 @@ import com.spire.doc.FileFormat;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -26,7 +27,7 @@ public class Word2PDF implements FileConversion{
     public String convert(String pathName, String dirAndFileName) throws Exception {
         String outPath = dirAndFileName + suffix;
         if(Files.exists(Paths.get(outPath))){
-            throw new RuntimeException(outPath+" 文件已存在");
+            throw new FileAlreadyExistsException(outPath+" 文件已存在");
         }
         //加载word
         Document document = new Document();

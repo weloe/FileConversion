@@ -9,6 +9,7 @@ import util.ImageUtil;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,10 +29,10 @@ public class PDF2Image implements FileConversion{
     }
 
     @Override
-    public String convert(String pathName,String dirAndFileName) throws Exception {
+    public String convert(String pathName,String dirAndFileName) throws FileAlreadyExistsException {
         String outPath = dirAndFileName + suffix;
         if(Files.exists(Paths.get(outPath))){
-            throw new RuntimeException(outPath+" 文件已存在");
+            throw new FileAlreadyExistsException(outPath+" 文件已存在");
         }
 
         pdf2multiImage(pathName,outPath,DEFAULT_DPI);

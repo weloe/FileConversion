@@ -5,6 +5,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import util.DebugUtil;
 
 import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -31,7 +32,7 @@ public class PDF2Word implements FileConversion {
     public String convert(String pathName,String dirAndFileName) throws Exception {
         String outPath = dirAndFileName + suffix;
         if(Files.exists(Paths.get(outPath))){
-            throw new RuntimeException(outPath+" 文件已存在");
+            throw new FileAlreadyExistsException(outPath+" 文件已存在");
         }
 
         pdf2word(pathName, outPath);
@@ -51,7 +52,7 @@ public class PDF2Word implements FileConversion {
         PDFTextStripper stripper = new PDFTextStripper();
 
 
-        stripper.setSortByPosition(true);//排序
+        stripper.setSortByPosition(true);
 
         stripper.setStartPage(1);//设置转换的开始页
         stripper.setEndPage(pagenumber);//设置转换的结束页
