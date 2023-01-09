@@ -1,6 +1,6 @@
 
+import convert.*;
 import convert.FileConversion;
-import convert.PDF2Image;
 import convert.PDF2Word;
 import util.DebugUtil;
 
@@ -15,6 +15,11 @@ public class Main {
     static {
         list.add(new PDF2Word());
         list.add(new PDF2Image());
+
+        list.add(new Word2HTML());
+        list.add(new Word2Image());
+        list.add(new Word2PDF());
+
     }
 
     public static void main(String[] args) {
@@ -23,10 +28,11 @@ public class Main {
 
         // 判断是否还有输入
         while (scan.hasNext()) {
-
+            System.out.println("============================");
             System.out.println("请输入转换方法，文件路径 输出路径");
-            System.out.println("例如 pdf2word D:\\test\\testpdf.pdf null");
-            System.out.println("输出路径如果输入'null'则为文件同目录下同名文件");
+            System.out.println("例如: ");
+            System.out.println("pdf2word D:\\test\\testpdf.pdf null");
+            System.out.println("输出路径如果输入'null'则为文件同目录下同名不同后缀文件");
 
             String convertMethod = scan.next();
             String pathName = scan.next();

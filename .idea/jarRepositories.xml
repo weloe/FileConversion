@@ -16,5 +16,15 @@
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="com.e-iceblue" />
+      <option name="name" value="com.e-iceblue" />
+      <option name="url" value="https://repo.e-iceblue.cn/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="com.e-iceblue" />
+      <option name="name" value="com.e-iceblue" />
+      <option name="url" value="http://repo.e-iceblue.cn/repository/maven-public/" />
+    </remote-repository>
   </component>
 </project>
