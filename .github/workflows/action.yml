@@ -1,0 +1,27 @@
+name: CI/CD
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # 使用 Ubuntu 环境进行构建
+
+    steps:
+      - name: Checkout code  # 检出代码到工作目录
+        uses: actions/checkout@v2
+
+      - name: Set up JDK  # 设置 JDK 环境
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Cache Maven packages  # 缓存 Maven 包
+        uses: actions/cache@v2
+        with:
+          path:
+            ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+      - name: Build with Maven  # 使用 Maven 进行构建
+        run: mvn clean install -Dmaven.test.skip=true
+      #- name: Run Tests  # 运行测试
+      #  run: mvn test
