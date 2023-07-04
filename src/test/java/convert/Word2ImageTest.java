@@ -1,10 +1,11 @@
 package convert;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
-public class Word2ImageTest extends TestCase {
+public class Word2ImageTest {
 
+    @Test
     public void testConvert() throws Exception {
-        new Word2Image().convert("D:\\test\\testFile.doc","D:\\test\\testFile");
+        new Word2Image().convert("src/main/resources/testWord.doc", "src/main/resources/Word2Image");
     }
 }

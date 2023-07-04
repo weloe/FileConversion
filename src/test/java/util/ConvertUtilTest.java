@@ -5,6 +5,6 @@ import junit.framework.TestCase;
 public class ConvertUtilTest extends TestCase {
 
     public void testConvert() throws Exception {
-        ConvertUtil.convert("pdf2word","D:\\test\\testFile.pdf","D:\\test\\testFile");
+        ConvertUtil.convert("pdf2word","src/main/resources/testPdf.pdf","src/main/resources/ConvertUtil");
     }
 }

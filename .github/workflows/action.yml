@@ -23,5 +23,5 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
       - name: Build with Maven  # 使用 Maven 进行构建
         run: mvn clean install -Dmaven.test.skip=true
-      #- name: Run Tests  # 运行测试
-      #  run: mvn test
+      - name: Run Tests  # 运行测试
+        run: mvn test
