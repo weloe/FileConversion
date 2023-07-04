@@ -3,6 +3,7 @@ package convert;
 import com.spire.doc.Document;
 import com.spire.doc.FileFormat;
 import com.spire.doc.documents.ImageType;
+import constant.ConvertMethod;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import util.ImageUtil;
 
@@ -16,19 +17,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Word2Image implements FileConversion{
+/**
+ * @author weloe
+ */
+public class Word2Image implements FileConversion {
     private String suffix = ".jpg";
 
     @Override
     public boolean isSupport(String s) {
-        return "word2image".equals(s);
+        return ConvertMethod.WORD2IMAGE.equals(s);
     }
 
     @Override
-    public String convert(String pathName, String dirAndFileName) throws Exception {
-        String outPath = dirAndFileName + suffix;
-        if(Files.exists(Paths.get(outPath))){
-            throw new FileAlreadyExistsException(outPath+" 文件已存在");
+    public String convert(String pathName, String outDirAndFileName) throws Exception {
+        String outPath = outDirAndFileName + getSuffix();
+        if (Files.exists(Paths.get(outPath))) {
+            throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }
 
         Document doc = new Document();
@@ -42,5 +46,10 @@ public class Word2Image implements FileConversion{
         List<BufferedImage> imageList = Arrays.asList(image);
         ImageUtil.yPic(imageList, outPath);
         return outPath;
+    }
+
+    @Override
+    public String getSuffix() {
+        return this.suffix;
     }
 }

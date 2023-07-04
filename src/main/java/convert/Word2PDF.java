@@ -3,6 +3,7 @@ package convert;
 
 import com.spire.doc.Document;
 import com.spire.doc.FileFormat;
+import constant.ConvertMethod;
 
 import java.awt.*;
 import java.io.FileInputStream;
@@ -14,20 +15,20 @@ import java.nio.file.Paths;
 /**
  * @author weloe
  */
-public class Word2PDF implements FileConversion{
+public class Word2PDF implements FileConversion {
 
     private String suffix = ".pdf";
 
     @Override
     public boolean isSupport(String s) {
-        return "word2pdf".equals(s);
+        return ConvertMethod.WORD2PDF.equals(s);
     }
 
     @Override
-    public String convert(String pathName, String dirAndFileName) throws Exception {
-        String outPath = dirAndFileName + suffix;
-        if(Files.exists(Paths.get(outPath))){
-            throw new FileAlreadyExistsException(outPath+" 文件已存在");
+    public String convert(String pathName, String outDirAndFileName) throws Exception {
+        String outPath = outDirAndFileName + getSuffix();
+        if (Files.exists(Paths.get(outPath))) {
+            throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }
         //加载word
         Document document = new Document();
@@ -37,4 +38,10 @@ public class Word2PDF implements FileConversion{
         document.close();
         return outPath;
     }
+
+    @Override
+    public String getSuffix() {
+        return this.suffix;
+    }
+
 }

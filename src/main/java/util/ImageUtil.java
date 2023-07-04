@@ -6,18 +6,22 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author weloe
+ */
 public class ImageUtil {
 
 
     /**
+     * 纵向处理图片
      * 将宽度相同的图片，竖向追加在一起 ##注意：宽度必须相同
      *
      * @param picList 文件流数组
      * @param outPath 输出路径
      */
-    public static void yPic(List<BufferedImage> picList, String outPath) {// 纵向处理图片
-        if (picList == null || picList.size() <= 0) {
-            DebugUtil.log("图片为空");
+    public static void yPic(List<BufferedImage> picList, String outPath) {
+        if (picList == null || picList.isEmpty()) {
+            System.out.println("图片为空");
             return;
         }
         try {

@@ -1,5 +1,6 @@
 package convert;
 
+import constant.ConvertMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import util.DebugUtil;
@@ -20,19 +21,18 @@ public class PDF2Word implements FileConversion {
 
     @Override
     public boolean isSupport(String s) {
-        return "pdf2word".equals(s);
+        return ConvertMethod.PDF2WORD.equals(s);
     }
 
     /**
-     *
      * @param pathName
      * @throws IOException
      */
     @Override
-    public String convert(String pathName,String dirAndFileName) throws Exception {
-        String outPath = dirAndFileName + suffix;
-        if(Files.exists(Paths.get(outPath))){
-            throw new FileAlreadyExistsException(outPath+" 文件已存在");
+    public String convert(String pathName, String outDirAndFileName) throws Exception {
+        String outPath = outDirAndFileName + getSuffix();
+        if (Files.exists(Paths.get(outPath))) {
+            throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }
 
         pdf2word(pathName, outPath);
@@ -40,10 +40,15 @@ public class PDF2Word implements FileConversion {
         return outPath;
     }
 
+    @Override
+    public String getSuffix() {
+        return this.suffix;
+    }
+
 
     private void pdf2word(String pathName, String outPath) throws IOException {
         PDDocument doc = PDDocument.load(new File(pathName));
-        int pagenumber = doc.getNumberOfPages();
+        int pageNumber = doc.getNumberOfPages();
         // 创建文件
         createFile(Paths.get(outPath));
 
@@ -55,7 +60,7 @@ public class PDF2Word implements FileConversion {
         stripper.setSortByPosition(true);
 
         stripper.setStartPage(1);//设置转换的开始页
-        stripper.setEndPage(pagenumber);//设置转换的结束页
+        stripper.setEndPage(pageNumber);//设置转换的结束页
         stripper.writeText(doc, writer);
         writer.close();
         doc.close();

@@ -1,5 +1,6 @@
 package convert;
 
+import constant.ConvertMethod;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -18,26 +19,31 @@ import java.util.List;
 /**
  * @author weloe
  */
-public class PDF2Image implements FileConversion{
+public class PDF2Image implements FileConversion {
     private String suffix = ".jpg";
     public static final int DEFAULT_DPI = 150;
 
 
     @Override
     public boolean isSupport(String s) {
-        return "pdf2image".equals(s);
+        return ConvertMethod.PDF2IMG.equals(s);
     }
 
     @Override
-    public String convert(String pathName,String dirAndFileName) throws FileAlreadyExistsException {
-        String outPath = dirAndFileName + suffix;
-        if(Files.exists(Paths.get(outPath))){
-            throw new FileAlreadyExistsException(outPath+" 文件已存在");
+    public String convert(String pathName, String outDirAndFileName) throws FileAlreadyExistsException {
+        String outPath = outDirAndFileName + getSuffix();
+        if (Files.exists(Paths.get(outPath))) {
+            throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }
 
-        pdf2multiImage(pathName,outPath,DEFAULT_DPI);
+        pdf2multiImage(pathName, outPath, DEFAULT_DPI);
 
         return outPath;
+    }
+
+    @Override
+    public String getSuffix() {
+        return this.suffix;
     }
 
     /**
@@ -46,7 +52,7 @@ public class PDF2Image implements FileConversion{
      *
      * @param pdfFile pdf文件路径
      * @param outPath 图片输出路径
-     * @param dpi 相当于图片的分辨率，值越大越清晰，但是转换时间变长
+     * @param dpi     相当于图片的分辨率，值越大越清晰，但是转换时间变长
      */
     public void pdf2multiImage(String pdfFile, String outPath, int dpi) {
         if (dpi <= 0) {
