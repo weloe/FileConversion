@@ -30,8 +30,7 @@ public class PDF2Image implements FileConversion {
     }
 
     @Override
-    public String convert(String pathName, String outDirAndFileName) throws FileAlreadyExistsException {
-        String outPath = outDirAndFileName + getSuffix();
+    public String convert(String pathName, String outPath) throws FileAlreadyExistsException {
         if (Files.exists(Paths.get(outPath))) {
             throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }

@@ -6,6 +6,7 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import util.DebugUtil;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -29,8 +30,7 @@ public class PDF2Word implements FileConversion {
      * @throws IOException
      */
     @Override
-    public String convert(String pathName, String outDirAndFileName) throws Exception {
-        String outPath = outDirAndFileName + getSuffix();
+    public String convert(String pathName, String outPath) throws Exception {
         if (Files.exists(Paths.get(outPath))) {
             throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }
@@ -53,7 +53,7 @@ public class PDF2Word implements FileConversion {
         createFile(Paths.get(outPath));
 
         FileOutputStream fos = new FileOutputStream(outPath);
-        Writer writer = new OutputStreamWriter(fos, "UTF-8");
+        Writer writer = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
         PDFTextStripper stripper = new PDFTextStripper();
 
 

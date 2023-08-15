@@ -29,8 +29,7 @@ public class Word2Image implements FileConversion {
     }
 
     @Override
-    public String convert(String pathName, String outDirAndFileName) throws Exception {
-        String outPath = outDirAndFileName + getSuffix();
+    public String convert(String pathName, String outPath) throws Exception {
         if (Files.exists(Paths.get(outPath))) {
             throw new FileAlreadyExistsException(outPath + " 文件已存在");
         }

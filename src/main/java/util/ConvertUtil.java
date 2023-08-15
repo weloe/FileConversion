@@ -24,30 +24,36 @@ public class ConvertUtil {
 
     public static String convert(String convertMethod, String pathName, String outPath) throws Exception {
 
-        String dirName;
-        String fileName;
-
         if ("null".equals(outPath)) {
             outPath = pathName;
+            outPath = outPath.substring(0,outPath.lastIndexOf("."));
         }
 
-        dirName = outPath.substring(0, outPath.lastIndexOf(File.separator));
-
-        int last;
+        FileConversion fileConversion = getConverter(convertMethod);
+        if (fileConversion == null) {
+            throw new RuntimeException("不支持该转化方法: " + convertMethod);
+        }
         if (outPath.lastIndexOf(".") != -1) {
-            last = outPath.lastIndexOf(".");
+            // 有后缀
+            FileCheckUtil.checkFileType(convertMethod.substring(convertMethod.lastIndexOf("2") + 1),outPath);
         } else {
-            last = outPath.length();
+            // 没有后缀加上后缀
+            outPath = outPath + fileConversion.getSuffix();
         }
-        fileName = outPath.substring(outPath.lastIndexOf(File.separator) + 1, last);
+        // 判断输出路径是否有文件
+        FileCheckUtil.checkFileExist(outPath);
 
+        outPath = fileConversion.convert(pathName, outPath);
+        return outPath;
+    }
+
+    private static FileConversion getConverter(String convertMethod) {
         // 调用方法
         for (FileConversion fileConversion : list) {
             if (fileConversion.isSupport(convertMethod)) {
-                outPath = fileConversion.convert(pathName, dirName, fileName);
+                return fileConversion;
             }
         }
-
-        return outPath;
+        return null;
     }
 }

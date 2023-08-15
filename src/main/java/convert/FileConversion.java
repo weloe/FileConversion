@@ -16,11 +16,11 @@ public interface FileConversion {
 
     /**
      * @param pathName          源文件路径
-     * @param outDirAndFileName 输出的文件路径和文件名
+     * @param outPath 输出的文件路径和文件名
      * @return
      * @throws Exception
      */
-    String convert(String pathName, String outDirAndFileName) throws Exception;
+    String convert(String pathName, String outPath) throws Exception;
 
 
     /**
@@ -30,8 +30,11 @@ public interface FileConversion {
      * @return
      * @throws Exception
      */
-    default String convert(String pathName, String outDir, String outName) throws Exception {
-        return convert(pathName, outDir + File.separator + outName);
+    default String convert(String pathName, String outDir, String outName,String suffix) throws Exception {
+        if (suffix == null || "".equals(suffix) || "".equals(suffix.trim())){
+            suffix = getSuffix();
+        }
+        return convert(pathName, outDir + File.separator + outName + suffix);
     }
 
     /**
@@ -44,7 +47,7 @@ public interface FileConversion {
     default String convert(String pathName) throws Exception {
         String dirName = pathName.substring(0, pathName.lastIndexOf(File.separator));
         String fileName = pathName.substring(pathName.lastIndexOf(File.separator) + 1, pathName.lastIndexOf("."));
-        return convert(pathName, dirName + File.separator + fileName);
+        return convert(pathName, dirName + File.separator + fileName + getSuffix());
     }
 
     /**

@@ -1,15 +1,25 @@
+import util.ConvertUtil;
 import util.DebugUtil;
 import util.FileCheckUtil;
-import util.ConvertUtil;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
  * @author weloe
  */
 public class Main {
+
+    static HashSet<String> convertMethodSet = new HashSet<>();
+    static {
+        convertMethodSet.add("pdf2word");
+        convertMethodSet.add("pdf2image");
+        convertMethodSet.add("word2html");
+        convertMethodSet.add("word2image");
+        convertMethodSet.add("word2pdf");
+    }
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -26,6 +36,12 @@ public class Main {
             String pathName = scan.next();
             String outPath = scan.next();
 
+            convertMethod = convertMethod.toLowerCase();
+            if (!convertMethodSet.contains(convertMethod)){
+                DebugUtil.logf("不存在该传换方法: ",convertMethod);
+                continue;
+            }
+
             if (!Files.exists(Paths.get(pathName))) {
                 DebugUtil.logf("该文件 %s 不存在", pathName);
                 continue;
@@ -35,7 +51,8 @@ public class Main {
 
             // 检查文件类型
             try {
-                FileCheckUtil.checkFileType(convertMethod.substring(0, 3), pathName);
+                String beforeType = convertMethod.substring(0, convertMethod.lastIndexOf("2"));
+                FileCheckUtil.checkFileType(beforeType, pathName);
             } catch (Exception e) {
                 DebugUtil.logf("请检查需要转换的文件的类型");
                 continue;
@@ -46,8 +63,9 @@ public class Main {
                 ConvertUtil.convert(convertMethod, pathName, outPath);
             } catch (Exception e) {
                 DebugUtil.logf(e.getMessage());
+                continue;
             }
-            DebugUtil.logf("转换成功！文件路径: %s", outPath);
+            DebugUtil.logf("转换成功！输出文件路径: %s", outPath);
         }
 
         scan.close();
