@@ -1,10 +1,10 @@
+import constant.ConvertMethod;
 import util.ConvertUtil;
 import util.DebugUtil;
 import util.FileCheckUtil;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -12,14 +12,6 @@ import java.util.Scanner;
  */
 public class Main {
 
-    static HashSet<String> convertMethodSet = new HashSet<>();
-    static {
-        convertMethodSet.add("pdf2word");
-        convertMethodSet.add("pdf2image");
-        convertMethodSet.add("word2html");
-        convertMethodSet.add("word2image");
-        convertMethodSet.add("word2pdf");
-    }
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -37,8 +29,8 @@ public class Main {
             String outPath = scan.next();
 
             convertMethod = convertMethod.toLowerCase();
-            if (!convertMethodSet.contains(convertMethod)){
-                DebugUtil.logf("不存在该传换方法: ",convertMethod);
+            if (!ConvertMethod.SET.contains(convertMethod)){
+                DebugUtil.logf("不存在该传换方法: %s",convertMethod);
                 continue;
             }
 
