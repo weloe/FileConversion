@@ -1,8 +1,17 @@
 package util;
 
+import com.spire.doc.Document;
+import com.spire.doc.FileFormat;
+import com.spire.doc.documents.XHTMLValidationType;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.util.ast.Node;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import convert.*;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +19,7 @@ import java.util.List;
  * @author weloe
  */
 public class ConvertUtil {
-    private static List<FileConversion> list = new ArrayList<>();
+    private static final List<FileConversion> list = new ArrayList<>();
 
     static {
         list.add(new PDF2Word());
@@ -19,6 +28,26 @@ public class ConvertUtil {
         list.add(new Word2HTML());
         list.add(new Word2Image());
         list.add(new Word2PDF());
+
+        list.add(new Md2Word());
+    }
+
+    /**
+     * 转换整个文件夹里的文件
+     * @param convertMethod
+     * @param inputFolder
+     * @param outFolder
+     * @throws Exception
+     */
+    public static void convertFiles(String convertMethod, String inputFolder, String outFolder) throws Exception {
+
+        for (File file : FileUtil.getFiles(inputFolder)) {
+            System.out.println(file.getName());
+            String outPath = outFolder + file.getName().split("\\.")[0];
+            System.out.println(outPath);
+            convert(convertMethod,file.getAbsolutePath(), outPath);
+        }
+
     }
 
 
@@ -47,6 +76,8 @@ public class ConvertUtil {
         return outPath;
     }
 
+
+
     private static FileConversion getConverter(String convertMethod) {
         // 调用方法
         for (FileConversion fileConversion : list) {
@@ -56,4 +87,43 @@ public class ConvertUtil {
         }
         return null;
     }
+
+
+
+
+
+
+    public static void htmlToWord(String html, String outPath) throws IOException {
+        // 创建临时 HTML 文件
+        File tempHtmlFile = File.createTempFile("temp", ".html");
+        tempHtmlFile.deleteOnExit(); // 确保程序结束后删除临时文件
+
+        // 将 HTML 字符串写入临时文件
+        try (FileWriter writer = new FileWriter(tempHtmlFile)) {
+            writer.write(html);
+        }
+
+
+        // 创建 Word 文档
+        Document document = new Document();
+
+        // 从临时 HTML 文件加载内容
+        document.loadFromFile(tempHtmlFile.getAbsolutePath(), FileFormat.Html, XHTMLValidationType.None);
+
+
+        // 保存 Word 文档
+        document.saveToFile(outPath, FileFormat.Docx_2013);
+
+        System.out.println("HTML 字符串已转换为 Word 文档: " + outPath);
+    }
+
+    public static String markdownToHtml(String markdown) {
+        MutableDataSet options = new MutableDataSet();
+        Parser parser = Parser.builder(options).build();
+        HtmlRenderer renderer = HtmlRenderer.builder(options).build();
+
+        Node document = parser.parse(markdown);
+        return renderer.render(document);
+    }
+
 }

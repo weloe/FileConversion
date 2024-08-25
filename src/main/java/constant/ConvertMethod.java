@@ -11,6 +11,7 @@ public class ConvertMethod {
     public final static String WORD2HTML = "word2html";
     public final static String WORD2IMAGE = "word2image";
     public final static String WORD2PDF = "word2pdf";
+    public final static String MD2WORD = "md2word";
 
     public static final HashSet<String> SET = new HashSet<>();
     static {
@@ -19,6 +20,7 @@ public class ConvertMethod {
         SET.add(ConvertMethod.WORD2HTML);
         SET.add(ConvertMethod.WORD2IMAGE);
         SET.add(ConvertMethod.WORD2PDF);
+        SET.add(ConvertMethod.MD2WORD);
     }
 
 }

@@ -43,6 +43,10 @@ public class FileCheckUtil {
         }
     }
 
+    public static boolean hasFile(String path) {
+        return Files.exists(Paths.get(path));
+    }
+
     public static void checkFileExist(String path) throws FileAlreadyExistsException {
         if (Files.exists(Paths.get(path))) {
             throw new FileAlreadyExistsException(path + " 文件已存在");
